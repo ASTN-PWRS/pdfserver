@@ -1,0 +1,22 @@
+title: "秘密文書"
+author: "森の研究者"
+user_pw: ""
+owner_pw: "confidential-secret"
+signature:
+  text: ""
+  font_name: "Courier"
+  font_size: 18
+  min_margin: 25
+  rgba: [0.1, 0.2, 0.3, 0.4]
+  style:
+    bold: false
+    italic: false
+watermark:
+  text: ""
+  font_name: "Courier"
+  font_size: 40
+  percent: 20
+  rgba: [0.1, 0.2, 0.3, 0.4]
+  style:
+    bold: true
+    italic: true

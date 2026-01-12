@@ -1,0 +1,25 @@
+<!DOCTYPE html >
+<html lang="ja" data-theme="light">
+  <head>
+    <meta charset="UTF-8">
+    <title>{% block title %}My App{% endblock %}</title>
+    <link rel="icon" href="{{ url_for('public', path='favicon.ico') }}" type="image/x-icon">
+    <link rel="stylesheet" href="{{ url_for('public', path='css/bulma-custom.css') }}">
+    <link rel="stylesheet" href="{{ url_for('public', path='css/app.css') }}">
+    <link rel="stylesheet" href="{{ url_for('public', path='shoelace/shoelace.css') }}">
+    <script type="module" src="{{ url_for('public', path='shoelace/shoelace.js') }}">
+          window.ShadowRoot && 
+      window.customElements && 
+      window.addEventListener('DOMContentLoaded', () => { 
+        setBasePath('/static/shoelace/'); }); 
+    </script>
+    <script src="{{ url_for('public', path='js/panzoom.min.js') }}"></script>
+
+    {% block head %}{% endblock %}
+  </head>
+  <body>
+    {% block nav %}{% endblock %}
+      {% block content %}{% endblock %}
+    {% block script %}{% endblock %}
+  </body>
+</html>

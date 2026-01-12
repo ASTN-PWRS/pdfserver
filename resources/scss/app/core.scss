@@ -1,0 +1,53 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--family-sans-serif);
+  font-size: 16px;
+  font-size-adjust: 0.55;
+  line-height: 1.6;
+  overflow: hidden;
+}
+
+@media screen {
+  main {
+    padding: 0;
+    margin: 0;
+    height: 100vh;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+  }
+  .section {
+    padding: 2cm;
+    margin: 0;
+    width: calc(90vw - 50px);
+    height: 100vh;
+    scroll-snap-align: start;
+  }
+
+  .panzoom-hint {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: rgba(121, 121, 121, 0.7);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    z-index: 10;
+    pointer-events: auto;
+  }
+}
+
+@media print {
+  .section {
+    min-height: 100%;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+}

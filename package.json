@@ -1,0 +1,34 @@
+{
+  "name": "pdfserver",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "dev": "uv run python app/main.py",
+    "build:bulma": "sass --load-path=node_modules resources/scss/bulma/bulma-custom.scss app/public/css/bulma-custom.css",
+    "build:css": "sass resources/scss/app/_index.scss app/public/css/app.css",
+    "build:shoelace": "vite build",
+    "build:macro": "uv run python app/utils/create_macro.py",
+    "build": "npm run build:shoelace && npm run build:css && npm run build:bulma && npm run build:macro"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@panzoom/panzoom": "^4.6.1",
+    "@shoelace-style/shoelace": "^2.20.1",
+    "bulma": "^1.0.4",
+    "cross-env": "^10.1.0",
+    "html2canvas": "^1.4.1",
+    "markdown-it": "^14.1.0"
+  },
+  "devDependencies": {
+    "sass": "^1.97.2",
+    "vite": "^7.3.1",
+    "vite-plugin-static-copy": "^3.1.4"
+  }
+}

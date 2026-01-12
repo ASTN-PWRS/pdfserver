@@ -1,0 +1,119 @@
+{% extends "layouts/base.jinja" %}
+
+{% block title %}ホーム{% endblock %}
+
+{% block content %}
+    <div id="hidden-preview" style="position: absolute; left: -9999px; top: -9999px; overflow: hidden;"> 
+      <s-page id="s-page" size="A4" direction="portrait"></s-page> 
+    </div>
+    <sl-split-panel style="height: 100vh;" position="50" horizontal>
+      <div slot="start" id="preview-container" style="position: relative; height: 100%; overflow: hidden;background:grey"> 
+        <div id="scaled-wrapper" style="transform-origin: top left;overflow-y:auto"></div>
+        <!-- 🎯 カスタムオーバーレイ -->
+        <div id="panzoom-hint" class="panzoom-hint">
+          <sl-icon name="chevron-up" style="font-size: 2rem;"></sl-icon>
+          <div style="border: 2px dashed #ccc; padding: 1rem 2rem; border-radius: 8px;">
+            <sl-icon name="mouse" style="font-size: 2rem;"></sl-icon>
+          </div>
+          <sl-icon name="chevron-down" style="font-size: 2rem;"></sl-icon>
+          <p style="margin-top: 1rem; color: #666;">マウスホイールで拡大・縮小できます</p>
+        </div>
+      </div>
+      <div slot="end" style="height: 100vh; display: flex; flex-direction: column;">
+        <div style="height:3rem;width:100vw">
+        <div class="button-group-toolbar">
+  <sl-button-group label="History">
+    <sl-tooltip content="Undo">
+      <sl-button><sl-icon name="arrow-counterclockwise" label="Undo"></sl-icon></sl-button>
+    </sl-tooltip>
+    <sl-tooltip content="Redo">
+      <sl-button><sl-icon name="arrow-clockwise" label="Redo"></sl-icon></sl-button>
+    </sl-tooltip>
+  </sl-button-group>
+
+  <sl-button-group label="Formatting">
+    <sl-tooltip content="Bold">
+      <sl-button><sl-icon name="type-bold" label="Bold"></sl-icon></sl-button>
+    </sl-tooltip>
+    <sl-tooltip content="Italic">
+      <sl-button><sl-icon name="type-italic" label="Italic"></sl-icon></sl-button>
+    </sl-tooltip>
+    <sl-tooltip content="Underline">
+      <sl-button><sl-icon name="type-underline" label="Underline"></sl-icon></sl-button>
+    </sl-tooltip>
+  </sl-button-group>
+
+  <sl-button-group label="Alignment">
+    <sl-tooltip content="Align Left">
+      <sl-button><sl-icon name="justify-left" label="Align Left"></sl-icon></sl-button>
+    </sl-tooltip>
+    <sl-tooltip content="Align Center">
+      <sl-button><sl-icon name="justify" label="Align Center"></sl-icon></sl-button>
+    </sl-tooltip>
+    <sl-tooltip content="Align Right">
+      <sl-button><sl-icon name="justify-right" label="Align Right"></sl-icon></sl-button>
+    </sl-tooltip>
+  </sl-button-group>
+</div>
+
+
+        </div>
+        <textarea id="editor" style="flex: 1;"></textarea>
+      </div>
+    </sl-split-panel>
+{% endblock %}
+{% block script %}
+<style>
+  .button-group-toolbar sl-button-group:not(:last-of-type) {
+    margin-right: var(--sl-spacing-x-small);
+  }
+</style>
+
+<script>
+const textarea = document.getElementById('editor');
+const sPage = document.getElementById('s-page');
+const wrapper = document.getElementById('scaled-wrapper');
+
+const dialog = document.getElementById('panzoom-hint');
+dialog.style.display = 'flex';
+
+textarea.addEventListener('input', () => {
+  sPage.innerHTML = textarea.value;
+
+  sPage.dispatchEvent(new CustomEvent('content-updated', {
+    bubbles: true,
+    composed: true
+  }));
+});
+
+// 初期化：s-page を wrapper に移動してスケーリング
+wrapper.appendChild(sPage);
+
+function scalePreview() {
+  const container = document.getElementById('preview-container');
+  const pageEl = sPage.shadowRoot?.querySelector('.page');
+  if (!pageEl) return;
+  const containerWidth = container.clientWidth;
+  const scale = containerWidth / pageEl.offsetWidth;
+ console.log(containerWidth);
+
+  wrapper.style.transform = `scale(${scale})`;
+}
+
+window.addEventListener('resize', scalePreview);
+window.addEventListener('load', scalePreview);
+
+const pan = Panzoom(wrapper, {
+    maxScale: 3,
+    minScale: 0.1,
+    contain: 'contain'
+  });
+
+wrapper.parentElement.addEventListener('wheel', pan.zoomWithWheel);
+dialog.addEventListener('click', () => {
+  dialog.style.display = 'none';
+});
+
+
+</script>
+{% endblock %}
