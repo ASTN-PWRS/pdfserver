@@ -6955,25 +6955,62 @@ var fo=Object.defineProperty,Jo=Object.defineProperties,tr=Object.getOwnProperty
   :host {
     display: contents;
   }
-`,ct=class extends z{constructor(){super(...arguments),this.hasStarted=!1,this.name="none",this.play=!1,this.delay=0,this.direction="normal",this.duration=1e3,this.easing="linear",this.endDelay=0,this.fill="auto",this.iterations=1/0,this.iterationStart=0,this.playbackRate=1,this.handleAnimationFinish=()=>{this.play=!1,this.hasStarted=!1,this.emit("sl-finish")},this.handleAnimationCancel=()=>{this.play=!1,this.hasStarted=!1,this.emit("sl-cancel")}}get currentTime(){var t,e;return(e=(t=this.animation)==null?void 0:t.currentTime)!=null?e:0}set currentTime(t){this.animation&&(this.animation.currentTime=t)}connectedCallback(){super.connectedCallback(),this.createAnimation()}disconnectedCallback(){super.disconnectedCallback(),this.destroyAnimation()}handleSlotChange(){this.destroyAnimation(),this.createAnimation()}async createAnimation(){var t,e;const i=(t=Qo[this.easing])!=null?t:this.easing,s=(e=this.keyframes)!=null?e:Sd[this.name],a=(await this.defaultSlot).assignedElements()[0];return!a||!s?!1:(this.destroyAnimation(),this.animation=a.animate(s,{delay:this.delay,direction:this.direction,duration:this.duration,easing:i,endDelay:this.endDelay,fill:this.fill,iterationStart:this.iterationStart,iterations:this.iterations}),this.animation.playbackRate=this.playbackRate,this.animation.addEventListener("cancel",this.handleAnimationCancel),this.animation.addEventListener("finish",this.handleAnimationFinish),this.play?(this.hasStarted=!0,this.emit("sl-start")):this.animation.pause(),!0)}destroyAnimation(){this.animation&&(this.animation.cancel(),this.animation.removeEventListener("cancel",this.handleAnimationCancel),this.animation.removeEventListener("finish",this.handleAnimationFinish),this.hasStarted=!1)}handleAnimationChange(){this.hasUpdated&&this.createAnimation()}handlePlayChange(){return this.animation?(this.play&&!this.hasStarted&&(this.hasStarted=!0,this.emit("sl-start")),this.play?this.animation.play():this.animation.pause(),!0):!1}handlePlaybackRateChange(){this.animation&&(this.animation.playbackRate=this.playbackRate)}cancel(){var t;(t=this.animation)==null||t.cancel()}finish(){var t;(t=this.animation)==null||t.finish()}render(){return y` <slot @slotchange=${this.handleSlotChange}></slot> `}};ct.styles=[L,zd];r([Kr("slot")],ct.prototype,"defaultSlot",2);r([l()],ct.prototype,"name",2);r([l({type:Boolean,reflect:!0})],ct.prototype,"play",2);r([l({type:Number})],ct.prototype,"delay",2);r([l()],ct.prototype,"direction",2);r([l({type:Number})],ct.prototype,"duration",2);r([l()],ct.prototype,"easing",2);r([l({attribute:"end-delay",type:Number})],ct.prototype,"endDelay",2);r([l()],ct.prototype,"fill",2);r([l({type:Number})],ct.prototype,"iterations",2);r([l({attribute:"iteration-start",type:Number})],ct.prototype,"iterationStart",2);r([l({attribute:!1})],ct.prototype,"keyframes",2);r([l({attribute:"playback-rate",type:Number})],ct.prototype,"playbackRate",2);r([x(["name","delay","direction","duration","easing","endDelay","fill","iterations","iterationsStart","keyframes"])],ct.prototype,"handleAnimationChange",1);r([x("play")],ct.prototype,"handlePlayChange",1);r([x("playbackRate")],ct.prototype,"handlePlaybackRateChange",1);ct.define("sl-animation");class Ad extends HTMLElement{static get observedAttributes(){return["size","direction"]}constructor(){super(),this.attachShadow({mode:"open"}),this.sizeMap={A3:{width:297,height:420},A4:{width:210,height:297},A5:{width:148,height:210},B5:{width:182,height:257}},this.wrapper=document.createElement("div"),this.wrapper.className="page";const e=document.createElement("slot");this.wrapper.appendChild(e),this.overlay=document.createElement("div"),this.overlay.className="overlay",this.overlay.textContent="⚠ サイズオーバー";const i=document.createElement("style");i.textContent=`
+`,ct=class extends z{constructor(){super(...arguments),this.hasStarted=!1,this.name="none",this.play=!1,this.delay=0,this.direction="normal",this.duration=1e3,this.easing="linear",this.endDelay=0,this.fill="auto",this.iterations=1/0,this.iterationStart=0,this.playbackRate=1,this.handleAnimationFinish=()=>{this.play=!1,this.hasStarted=!1,this.emit("sl-finish")},this.handleAnimationCancel=()=>{this.play=!1,this.hasStarted=!1,this.emit("sl-cancel")}}get currentTime(){var t,e;return(e=(t=this.animation)==null?void 0:t.currentTime)!=null?e:0}set currentTime(t){this.animation&&(this.animation.currentTime=t)}connectedCallback(){super.connectedCallback(),this.createAnimation()}disconnectedCallback(){super.disconnectedCallback(),this.destroyAnimation()}handleSlotChange(){this.destroyAnimation(),this.createAnimation()}async createAnimation(){var t,e;const i=(t=Qo[this.easing])!=null?t:this.easing,s=(e=this.keyframes)!=null?e:Sd[this.name],a=(await this.defaultSlot).assignedElements()[0];return!a||!s?!1:(this.destroyAnimation(),this.animation=a.animate(s,{delay:this.delay,direction:this.direction,duration:this.duration,easing:i,endDelay:this.endDelay,fill:this.fill,iterationStart:this.iterationStart,iterations:this.iterations}),this.animation.playbackRate=this.playbackRate,this.animation.addEventListener("cancel",this.handleAnimationCancel),this.animation.addEventListener("finish",this.handleAnimationFinish),this.play?(this.hasStarted=!0,this.emit("sl-start")):this.animation.pause(),!0)}destroyAnimation(){this.animation&&(this.animation.cancel(),this.animation.removeEventListener("cancel",this.handleAnimationCancel),this.animation.removeEventListener("finish",this.handleAnimationFinish),this.hasStarted=!1)}handleAnimationChange(){this.hasUpdated&&this.createAnimation()}handlePlayChange(){return this.animation?(this.play&&!this.hasStarted&&(this.hasStarted=!0,this.emit("sl-start")),this.play?this.animation.play():this.animation.pause(),!0):!1}handlePlaybackRateChange(){this.animation&&(this.animation.playbackRate=this.playbackRate)}cancel(){var t;(t=this.animation)==null||t.cancel()}finish(){var t;(t=this.animation)==null||t.finish()}render(){return y` <slot @slotchange=${this.handleSlotChange}></slot> `}};ct.styles=[L,zd];r([Kr("slot")],ct.prototype,"defaultSlot",2);r([l()],ct.prototype,"name",2);r([l({type:Boolean,reflect:!0})],ct.prototype,"play",2);r([l({type:Number})],ct.prototype,"delay",2);r([l()],ct.prototype,"direction",2);r([l({type:Number})],ct.prototype,"duration",2);r([l()],ct.prototype,"easing",2);r([l({attribute:"end-delay",type:Number})],ct.prototype,"endDelay",2);r([l()],ct.prototype,"fill",2);r([l({type:Number})],ct.prototype,"iterations",2);r([l({attribute:"iteration-start",type:Number})],ct.prototype,"iterationStart",2);r([l({attribute:!1})],ct.prototype,"keyframes",2);r([l({attribute:"playback-rate",type:Number})],ct.prototype,"playbackRate",2);r([x(["name","delay","direction","duration","easing","endDelay","fill","iterations","iterationsStart","keyframes"])],ct.prototype,"handleAnimationChange",1);r([x("play")],ct.prototype,"handlePlayChange",1);r([x("playbackRate")],ct.prototype,"handlePlaybackRateChange",1);ct.define("sl-animation");class Ad extends HTMLElement{static get observedAttributes(){return["size","direction","debug"]}constructor(){super(),this.attachShadow({mode:"open"}),this.sizeMap={A3:{width:297,height:420},A4:{width:210,height:297},A5:{width:148,height:210},B5:{width:182,height:257}},this.content=document.createElement("div"),this.content.className="page",this.content.setAttribute("part","content");const e=document.createElement("slot");this.content.appendChild(e),this.watermark=document.createElement("div"),this.watermark.className="watermark",this.watermark.textContent="⚠ サイズオーバー",this.watermark.style.display="none",this.content.appendChild(this.watermark);const i=document.createElement("style");i.textContent=`
       .page {
+        position: relative;
         background: white;
         box-shadow: 0 0 5px rgba(0,0,0,0.1);
         overflow: hidden;
-        position: relative;
-        margin: auto;
+        margin: 0;
       }
-      .overlay {
+
+      .page.debug {
+        background-color: rgba(0, 0, 0, 0.03);
+      }
+
+      :host-context(.sl-theme-dark) .page.debug {
+        background-color: rgba(255, 255, 255, 0.05);
+      }
+
+      .watermark {
         position: absolute;
-        inset: 0;
-        background: rgba(255, 0, 0, 0.1);
-        color: red;
-        font-weight: bold;
-        display: none;
-        align-items: center;
-        justify-content: center;
-        z-index: 10;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) rotate(-20deg);
+        font-size: 3rem;
+        color: rgba(200, 0, 0, 0.9);
         pointer-events: none;
-        font-size: 1.2rem;
+        white-space: nowrap;
+        user-select: none;
+        z-index: 0;
       }
-    `,this.shadowRoot.append(i,this.wrapper,this.overlay)}connectedCallback(){this.hasAttribute("size")||this.setAttribute("size","A4"),this.hasAttribute("direction")||this.setAttribute("direction","portrait"),this.updateSize(),this.observeResize(),this.addEventListener("content-updated",()=>this.checkOverflow())}attributeChangedCallback(){this.updateSize()}updateSize(){const e=this.getAttribute("size")||"A4",i=this.getAttribute("direction")||"portrait",{width:s,height:o}=this.sizeMap[e]||this.sizeMap.A4,a=i==="portrait"?s:o,n=i==="portrait"?o:s;this.wrapper.style.width=`${a}mm`,this.wrapper.style.height=`${n}mm`,this.checkOverflow()}observeResize(){this.resizeObserver=new ResizeObserver(()=>this.checkOverflow()),this.resizeObserver.observe(this.wrapper)}checkOverflow(){const e=this.wrapper,i=e.scrollHeight>e.clientHeight||e.scrollWidth>e.clientWidth;this.overlay.style.display=i?"flex":"none"}disconnectedCallback(){this.resizeObserver?.disconnect()}}customElements.define("s-page",Ad);
+    `,this.shadowRoot.append(i,this.content)}connectedCallback(){this.hasAttribute("size")||this.setAttribute("size","A4"),this.hasAttribute("direction")||this.setAttribute("direction","portrait"),this.updateSize(),this.observeResize(),this.updateDebugStyle(),requestAnimationFrame(()=>this.checkOverflow()),this.addEventListener("content-updated",()=>this.checkOverflow())}attributeChangedCallback(e){(e==="size"||e==="direction")&&this.updateSize(),e==="debug"&&this.updateDebugStyle()}updateSize(){const e=this.getAttribute("size")||"A4",i=this.getAttribute("direction")||"portrait",{width:s,height:o}=this.sizeMap[e]||this.sizeMap.A4,a=i==="portrait"?s:o,n=i==="portrait"?o:s;this.content.style.width=`${a}mm`,this.content.style.height=`${n}mm`,this.checkOverflow()}updateDebugStyle(){this.content.classList.toggle("debug",this.hasAttribute("debug"))}observeResize(){this.resizeObserver=new ResizeObserver(()=>this.checkOverflow()),this.resizeObserver.observe(this.content)}checkOverflow(){const e=this.content,i=getComputedStyle(e),s=parseFloat(i.paddingTop),o=parseFloat(i.paddingBottom),a=parseFloat(i.paddingLeft),n=parseFloat(i.paddingRight),d=parseFloat(i.borderTopWidth),c=parseFloat(i.borderBottomWidth),u=parseFloat(i.borderLeftWidth),f=parseFloat(i.borderRightWidth),h=e.clientWidth-a-n-u-f,p=e.clientHeight-s-o-d-c,m=e.scrollWidth,b=e.scrollHeight,g=m>h||b>p;this.watermark.style.display=g?"block":"none"}disconnectedCallback(){this.resizeObserver?.disconnect()}}customElements.define("s-page",Ad);class Ed extends HTMLElement{constructor(){super(),this.attachShadow({mode:"open"}),this.md=window.markdownit({html:!1,linkify:!0,typographer:!0}),this.container=document.createElement("div"),this.container.setAttribute("part","content"),this.container.className="markdown";const e=document.createElement("style");e.textContent=`
+      .markdown {
+        all: initial;
+        font-family: var(--sl-font-sans, sans-serif);
+        font-size: var(--sl-font-size-medium, 1rem);
+        line-height: 1.6;
+        display: block;
+      }
+
+      .markdown :where(h1, h2, h3, h4, h5, h6) {
+        font-weight: bold;
+        margin: 1em 0 0.5em;
+      }
+
+      .markdown :where(p, ul, ol, pre, blockquote) {
+        margin: 0.5em 0;
+      }
+
+      .markdown :where(code) {
+        font-family: var(--sl-font-mono, monospace);
+        background: transparent;
+        padding: 0.2em 0.4em;
+        border-radius: 4px;
+      }
+
+      .markdown :where(a) {
+        color: inherit;
+        text-decoration: underline;
+      }
+    `,this.shadowRoot.append(e,this.container)}connectedCallback(){this.renderMarkdown()}renderMarkdown(){const e=this.textContent.trim(),i=this.md.render(e);this.container.innerHTML=i,this.dispatchEvent(new CustomEvent("content-updated",{bubbles:!0,composed:!0}))}}customElements.define("s-markdown",Ed);

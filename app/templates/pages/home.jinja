@@ -3,8 +3,35 @@
 {% block title %}ホーム{% endblock %}
 
 {% block content %}
+    <style>
+    s-markdown::part(content) {
+      color: #333;
+      background: #f9f9f9;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.sl-theme-dark s-markdown::part(content) {
+  color: #eee;
+  background: #1a1a1a;
+  border-color: #333;
+}
+s-markdown::part(content) {
+  font-size: 1.2rem;
+  color: darkgreen;
+  background: #f0f0f0;
+}
+{# s-page::part(content) {
+  padding: 10mm;
+  border: 2mm solid black;
+} #}
+
+    </style>
     <div id="hidden-preview" style="position: absolute; left: -9999px; top: -9999px; overflow: hidden;"> 
-      <s-page id="s-page" size="A4" direction="portrait"></s-page> 
+      <s-page id="s-page" debug size="A4" direction="portrait">
+        <s-markdown id="s-page"></s-markdown>
+      </s-page> 
     </div>
     <sl-split-panel style="height: 100vh;" position="50" horizontal>
       <div slot="start" id="preview-container" style="position: relative; height: 100%; overflow: hidden;background:grey"> 

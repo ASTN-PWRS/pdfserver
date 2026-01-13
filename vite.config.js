@@ -25,6 +25,10 @@ export default defineConfig({
           src: "node_modules/@panzoom/panzoom/dist/panzoom.min.js",
           dest: "../js",
         },
+        {
+          src: "node_modules/markdown-it/dist/markdown-it.min.js",
+          dest: "../js",
+        },
       ],
     }),
   ],
