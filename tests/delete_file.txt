@@ -1,0 +1,12 @@
+function deleteFileByName(PDO $pdo, string $folderId, string $logicalName): int {
+    $stmt = $pdo->prepare("
+        DELETE FROM files
+        WHERE folder_id = :folder_id AND logical_name = :logical_name
+    ");
+    $stmt->execute([
+        ':folder_id' => $folderId,
+        ':logical_name' => $logicalName
+    ]);
+
+    return $stmt->rowCount(); // 削除された行数
+}

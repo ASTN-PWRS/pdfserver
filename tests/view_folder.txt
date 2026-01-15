@@ -1,0 +1,20 @@
+-- :folder_id に対象フォルダの UUID を指定
+
+-- サブフォルダ一覧
+SELECT name AS entry_name, 'folder' AS entry_type
+FROM folders
+WHERE parent_id = :folder_id AND is_deleted = FALSE
+
+UNION
+
+-- ファイル一覧（最新バージョンのみ）
+SELECT logical_name AS entry_name, 'file' AS entry_type
+FROM (
+    SELECT DISTINCT ON (logical_name)
+           logical_name, version, is_deleted
+    FROM files
+    WHERE folder_id = :folder_id
+    ORDER BY logical_name, version DESC
+) AS latest
+WHERE is_deleted = FALSE
+ORDER BY entry_type, entry_name;

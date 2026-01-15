@@ -1,0 +1,7 @@
+SELECT f2.id, f2.version, f2.uploaded_at, f2.size, f2.logical_name
+FROM files f1
+JOIN files f2
+  ON f1.folder_id = f2.folder_id
+ AND f1.logical_name = f2.logical_name
+WHERE f1.id = :target_file_id
+ORDER BY f2.version DESC;

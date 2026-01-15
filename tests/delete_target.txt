@@ -1,0 +1,19 @@
+-- 30日以上前に削除されたファイルとフォルダ
+SELECT
+  'file' AS type,
+  id,
+  updated_at
+FROM files
+WHERE is_deleted = TRUE
+  AND updated_at < NOW() - INTERVAL '30 days'
+
+UNION ALL
+
+SELECT
+  'folder' AS type,
+  id,
+  updated_at
+FROM folders
+WHERE is_deleted = TRUE
+  AND updated_at < NOW() - INTERVAL '30 days'
+ORDER BY updated_at ASC;

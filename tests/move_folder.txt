@@ -1,0 +1,39 @@
+-- 同じ親に同名フォルダがすでに存在していないかチェック（ユニーク制約のため）
+SELECT 1
+FROM folders
+WHERE parent_id = :new_parent_id
+  AND name = (SELECT name FROM folders WHERE id = :folder_id)
+  AND id != :folder_id
+  AND is_deleted = FALSE;
+
+WITH RECURSIVE descendants AS (
+  SELECT id FROM folders WHERE id = :folder_id
+  UNION ALL
+  SELECT f.id
+  FROM folders f
+  JOIN descendants d ON f.parent_id = d.id
+)
+SELECT 1 FROM descendants WHERE id = :new_parent_id;
+-- 結果が返ってきたらNG（循環になる）
+
+循環参照の防止
+
+フォルダを自分の子孫に移動しようとすると、再帰構造が壊れるのでNG
+
+WITH RECURSIVE descendants AS (
+  SELECT id FROM folders WHERE id = :folder_id
+  UNION ALL
+  SELECT f.id
+  FROM folders f
+  JOIN descendants d ON f.parent_id = d.id
+)
+SELECT 1 FROM descendants WHERE id = :new_parent_id;
+-- 結果が返ってきたらNG（循環になる）
+
+-- :folder_id に移動対象のフォルダID
+-- :new_parent_id に移動先の親フォルダID
+
+UPDATE folders
+SET parent_id = :new_parent_id,
+    updated_at = CURRENT_TIMESTAMP
+WHERE id = :folder_id;

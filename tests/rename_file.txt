@@ -1,0 +1,31 @@
+-- UNIQUE (folder_id, logical_name, version) 制約があるので、
+-- 同じバージョン番号で新しい名前がすでに存在していないかを事前にチェックする必要があるよ。
+SELECT 1
+FROM files
+WHERE folder_id = :folder_id
+  AND logical_name = :new_name
+  AND version = (
+    SELECT MAX(version)
+    FROM files
+    WHERE folder_id = :folder_id
+      AND logical_name = :new_name
+  );
+
+--
+-- :folder_id に対象フォルダのID
+-- :old_name に現在のファイル名
+-- :new_name に変更後のファイル名
+
+WITH latest AS (
+  SELECT id
+  FROM files
+  WHERE folder_id = :folder_id
+    AND logical_name = :old_name
+    AND is_deleted = FALSE
+  ORDER BY version DESC
+  LIMIT 1
+)
+UPDATE files
+SET logical_name = :new_name,
+    updated_at = CURRENT_TIMESTAMP
+WHERE id IN (SELECT id FROM latest);

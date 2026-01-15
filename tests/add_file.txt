@@ -1,0 +1,70 @@
+-- 0.削除されていないファイルが存在するか確認
+
+-- :folder_id と :logical_name を指定
+
+SELECT 1
+FROM files
+WHERE folder_id = :folder_id
+  AND logical_name = :logical_name
+  AND is_deleted = FALSE;
+
+
+-- 1.存在する → 通常のバージョンアップ ファイルの追加（新規 or バージョン更新）
+-- :folder_id に対象フォルダのUUID
+-- :logical_name にファイル名（例: 'report.pdf'）
+-- :mime_type, :size にファイル情報
+
+WITH latest_version AS (
+  SELECT MAX(version) AS max_version
+  FROM files
+  WHERE folder_id = :folder_id
+    AND logical_name = :logical_name
+)
+INSERT INTO files (
+    folder_id,
+    logical_name,
+    version,
+    mime_type,
+    size,
+    is_deleted,
+    uploaded_at,
+    updated_at
+)
+VALUES (
+    :folder_id,
+    :logical_name,
+    COALESCE((SELECT max_version FROM latest_version), 0) + 1,
+    :mime_type,
+    :size,
+    FALSE,
+    CURRENT_TIMESTAMP,
+    CURRENT_TIMESTAMP
+)
+RETURNING id, version;
+
+
+-- 存在しない → バージョン1で新規追加
+
+INSERT INTO files (
+    folder_id,
+    logical_name,
+    version,
+    mime_type,
+    size,
+    is_deleted,
+    uploaded_at,
+    updated_at
+)
+VALUES (
+    :folder_id,
+    :logical_name,
+    1,
+    :mime_type,
+    :size,
+    FALSE,
+    CURRENT_TIMESTAMP,
+    CURRENT_TIMESTAMP
+)
+RETURNING id, version;
+
+

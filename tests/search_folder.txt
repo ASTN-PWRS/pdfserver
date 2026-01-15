@@ -1,0 +1,40 @@
+$currentId = $rootId;
+
+foreach ($parts as $name) {
+    $stmt = $pdo->prepare("SELECT id FROM folders WHERE parent_id = ? AND name = ? AND is_deleted = FALSE");
+    $stmt->execute([$currentId, $name]);
+    $row = $stmt->fetch();
+
+    if (!$row) {
+        // フォルダが存在しない
+        throw new Exception("Folder not found: $name");
+    }
+
+    $currentId = $row['id'];
+}
+
+// $currentId が /doc/aa/bb の folder_id
+
+function resolveFolderId(PDO $pdo, array $pathParts): ?string {
+    $parentId = null; // ルートは parent_id = NULL
+
+    foreach ($pathParts as $name) {
+        $stmt = $pdo->prepare("
+            SELECT id FROM folders
+            WHERE name = :name AND parent_id IS NOT DISTINCT FROM :parent_id AND is_deleted = FALSE
+        ");
+        $stmt->execute([
+            ':name' => $name,
+            ':parent_id' => $parentId
+        ]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$row) {
+            return null; // フォルダが見つからない
+        }
+
+        $parentId = $row['id'];
+    }
+
+    return $parentId; // 最後にたどり着いた folder_id
+}

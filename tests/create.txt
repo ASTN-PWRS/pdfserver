@@ -1,0 +1,36 @@
+-- UUID生成用の拡張機能を有効化（まだなら）
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+-- フォルダテーブル（論理削除対応）
+CREATE TABLE folders (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    name VARCHAR(255) NOT NULL,
+    parent_id UUID REFERENCES folders(id) ON DELETE CASCADE,
+    is_deleted BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 同じ親フォルダ内での名前の重複を防ぐ
+CREATE UNIQUE INDEX folders_unique_name_per_parent
+ON folders (parent_id, name);
+
+-- ファイルテーブル（バージョン管理・論理削除対応）
+CREATE TABLE files (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    folder_id UUID REFERENCES folders(id) ON DELETE CASCADE,
+    logical_name VARCHAR(255) NOT NULL,
+    version INTEGER NOT NULL,
+    mime_type VARCHAR(100),
+    size BIGINT,
+    is_deleted BOOLEAN DEFAULT FALSE,
+    uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 同じフォルダ内でのファイル名＋バージョンの重複を防ぐ
+CREATE UNIQUE INDEX files_unique_name_version_per_folder
+ON files (folder_id, logical_name, version);
+
+-- ルートフォルダの登録
+INSERT INTO folders (name, parent_id) VALUES ('/', NULL);

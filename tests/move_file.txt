@@ -1,0 +1,18 @@
+移動先フォルダに同名・同バージョンのファイルが存在しないかチェッ
+
+SELECT 1
+FROM files
+WHERE folder_id = :new_folder_id
+  AND logical_name = (SELECT logical_name FROM files WHERE id = :file_id)
+  AND version = (SELECT version FROM files WHERE id = :file_id);
+
+
+ファイル移動の基本SQL（最新版のみ）
+
+-- :file_id に移動対象のファイルID
+-- :new_folder_id に移動先のフォルダID
+
+UPDATE files
+SET folder_id = :new_folder_id,
+    updated_at = CURRENT_TIMESTAMP
+WHERE id = :file_id;

@@ -1,0 +1,19 @@
+function deleteFolderRecursively(PDO $pdo, string $folderId): void {
+    // 1. サブフォルダを取得
+    $stmt = $pdo->prepare("SELECT id FROM folders WHERE parent_id = :parent_id");
+    $stmt->execute([':parent_id' => $folderId]);
+    $subfolders = $stmt->fetchAll(PDO::FETCH_COLUMN);
+
+    // 2. サブフォルダを再帰的に削除
+    foreach ($subfolders as $subId) {
+        deleteFolderRecursively($pdo, $subId);
+    }
+
+    // 3. フォルダ内のファイルを削除
+    $stmt = $pdo->prepare("DELETE FROM files WHERE folder_id = :folder_id");
+    $stmt->execute([':folder_id' => $folderId]);
+
+    // 4. フォルダ自体を削除
+    $stmt = $pdo->prepare("DELETE FROM folders WHERE id = :id");
+    $stmt->execute([':id' => $folderId]);
+}

@@ -1,0 +1,18 @@
+-- :folder_id に対象フォルダのUUID
+-- :new_name に変更後の名前
+
+-- 1. 同じ親に同名フォルダがないかチェック
+SELECT 1
+FROM folders f1
+JOIN folders f2 ON f1.parent_id = f2.parent_id
+WHERE f1.id = :folder_id
+  AND f2.name = :new_name
+  AND f2.is_deleted = FALSE
+  AND f2.id != f1.id;
+
+--なかったら追加
+
+UPDATE folders
+SET name = :new_name,
+    updated_at = CURRENT_TIMESTAMP
+WHERE id = :folder_id;

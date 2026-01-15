@@ -1,0 +1,16 @@
+$pathParts = ['doc', 'aa', 'bb'];
+$parentId = getRootFolderId(); // name = '/' のID
+
+foreach ($pathParts as $name) {
+    $folder = $pdo->prepare("SELECT id FROM folders WHERE name = ? AND parent_id = ?");
+    $folder->execute([$name, $parentId]);
+    $row = $folder->fetch();
+
+    if ($row) {
+        $parentId = $row['id']; // 既存フォルダをたどる
+    } else {
+        $insert = $pdo->prepare("INSERT INTO folders (name, parent_id) VALUES (?, ?) RETURNING id");
+        $insert->execute([$name, $parentId]);
+        $parentId = $insert->fetchColumn(); // 新規作成
+    }
+}
